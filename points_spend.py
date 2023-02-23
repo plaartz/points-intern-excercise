@@ -85,7 +85,7 @@ def output(transactions: list) -> dict:
 
 if __name__ == "__main__":
 
-    args = sys.argv[1:]   
+    args = sys.argv[1:]  
     try:
         if len(args) < 2:
             raise Exception('Not enough arguments provided')
