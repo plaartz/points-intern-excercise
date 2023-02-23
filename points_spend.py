@@ -24,7 +24,7 @@ def load_csv(filename: str) -> list:
     """
 
     file_data = []
-    with open(filename, newline='',encoding='utf-8') as file:
+    with open(filename, newline='', encoding='utf-8') as file:
         reader = csv.DictReader(file)
         for row in reader:
             row['points'] = int(row['points'])
@@ -45,7 +45,7 @@ def spend(transactions: list, amount: int):
         amount (int): Amount of points to spend
     """
 
-    if amount<0:
+    if amount < 0:
         raise Exception("Can't spend negative points")
     spent_points = []
     for transaction in transactions:
@@ -84,8 +84,7 @@ def output(transactions: list) -> dict:
 
 
 if __name__ == "__main__":
-
-    args = sys.argv[1:]  
+    args = sys.argv[1:]
     try:
         if len(args) < 2:
             raise Exception('Not enough arguments provided')
