@@ -1,8 +1,17 @@
-import sys, csv
+"""
+This module allows for a user to load in transactions from a csv file, and make purchases using 
+    points. When points are spent, they are taken from the oldest transaction. After points 
+    are spent, the output returns the remaining point balances for each payer in the original
+    transactions file.
+"""
+
+import sys
+import csv
 
 
 def load_csv(filename: str) -> list:
-    """This method takes a filename as an argument and loads each row from a csv into a 
+    """
+    This method takes a filename as an argument and loads each row from a csv into a 
         list entry as a dictionary.
 
     Args:
@@ -25,7 +34,8 @@ def load_csv(filename: str) -> list:
 
 
 def spend(transactions: list, amount: int):
-    """This method adjusts transaction amounts in the orginal list to adjust for the amount of 
+    """
+    This method adjusts transaction amounts in the orginal list to adjust for the amount of 
         points the user is spending. If not enough points in transaction history, maintains 
         original list and raises an exception.
 
@@ -35,24 +45,27 @@ def spend(transactions: list, amount: int):
         amount (int): Amount of points to spend
     """
 
-    temp_list = []
+    if amount<0:
+        raise Exception("Can't spend negative points")
+    spent_points = []
     for transaction in transactions:
         if transaction['points'] >= amount:
             transaction['points'] -= amount
             amount = 0
             break
         amount -= transaction['points']
-        temp_list.append(transaction['points'])
+        spent_points.append(transaction['points'])
         transaction['points'] = 0
 
     if amount > 0:
-        for j, spend_history in enumerate(temp_list):
+        for j, spend_history in enumerate(spent_points):
             transactions[j]['points'] = spend_history
         raise Exception("Not enough points")
 
 
 def output(transactions: list) -> dict:
-    """Returns a dictionary that contains all payer point balances given a list of transactions.
+    """
+    Returns a dictionary that contains all payer point balances given a list of transactions.
 
     Args:
         data (list): A data list that contains transaction history after spending points
@@ -72,10 +85,10 @@ def output(transactions: list) -> dict:
 
 if __name__ == "__main__":
 
-    args = sys.argv[1:]
+    args = sys.argv[1:]   
     try:
         if len(args) < 2:
-            raise Exception('not enough arguments provided')
+            raise Exception('Not enough arguments provided')
 
         data = load_csv(args[1])
 
